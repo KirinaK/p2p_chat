@@ -1,17 +1,17 @@
 <div class="container">
-  <div class="alert">
-    
-  </div>
   <div class="col-lg-7">
+    <input type="text" [(ngModel)]="textMessage" name="text" class="form-control" placeholder="Enter your message" (keyup.enter)="sendText()">
     <form class="chat">
-      <label>You:</label>
-      <p #p></p>
-      <input type="text" [(ngModel)]="textMessage" name="text" class="form-control" placeholder="Enter your message" (keyup.enter)="sendText()">
+      <label>{{myPeerId}}:</label>
+      <p id="text"></p>
+      <p *ngFor="let message of messageArray">{{message}}</p>
     </form>
   </div>
   <div class="col-lg-3 name-list">
+    <input type="text" name="friend-id" [(ngModel)]="friendId">
+    <button class="submit" (click)="connect()">connect</button>
     <ul>Online:
-      <li>asdasd</li>
+      <li>{{friendId}}</li>
     </ul>
   </div>
 </div>

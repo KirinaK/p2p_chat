@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import * as Peer from 'peerjs';
 
 @Component({
@@ -8,36 +8,44 @@ import * as Peer from 'peerjs';
 })
 export class AppComponent {
   public textMessage: string;
-  destId: any;
-  peer = new Peer('pick-an-id');
-  conn = this.peer.connect(this.destId);
-  @ViewChild('p') p:ElementRef;
+  public messageArray = [];
+  public myPeerId: string;
+  public friendId: string;
+  private peer: any;
 
-  constructor() {
-
-  }
+  constructor() {}
 
   ngOnInit() {
-    this.conn.send('hello');
-  }
+    this.peer = new Peer({});
+    setTimeout(() => {
+      this.myPeerId = this.peer.id;
+    },1000);
+    
+    let conn = this.peer.connect(this.friendId);
 
-  sendText() {
-    let pText = document.createElement('p');
-    this.p.nativeElement.innerHTML = this.textMessage;
-  }
-
-  connectServer() {
-    this.conn.on('open', function(){
-      this.conn.send('hi!');
-    });
-  }
-
-  receive() {
-    this.peer.on('connection', function(conn) {
-      conn.on('data', function(data){
-        console.log(data);
+    conn.on('open', function() {
+      conn.on ('data', function(data) {
+        console.log('Recieved message:', data);
       });
-    });
-  }
+      conn.send('kiki');
+    })
 
+    this.peer.on('signal', function(data) {
+      console.log(JSON.stringify(data));
+      
+      this.textMessage = data;
+    })
+    
+    this.peer.on('connection', function(conn) {
+      conn.on ('data', function(data) {
+        console.log('Recieved message:' + data);
+      })
+    })
+    
+  }
+  
+  sendText() {
+    this.messageArray.push(this.textMessage);
+    this.textMessage = ' ';
+  }
 }
