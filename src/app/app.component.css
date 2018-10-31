@@ -21,7 +21,12 @@ input {
 }
 .name-list {
   float: right;
+  margin: 10px 0 10px 50px;
 }
 .name-list ul {
   list-style-type: none;
+  padding: 0;
+}
+.modal-body input {
+  width: 100%;
 }

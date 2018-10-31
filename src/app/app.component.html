@@ -1,16 +1,35 @@
-<div class="container">
-  <div class="col-lg-7">
-    <input type="text" class="form-control" name="friend-id" [(ngModel)]="friendId" placeholder="Enter id">
-    <input type="text" [(ngModel)]="textMessage" name="text" class="form-control" placeholder="Enter your message" (keyup.enter)="sendText()">
-    <form class="chat">
-      <label>{{myPeerId}}:</label>
-      <p id="text"></p>
-      <p *ngFor="let message of messageArray">{{message}}</p>
-    </form>
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Hi there!</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
-  <div class="col-lg-3 name-list">
-    <ul>Online:
-      <li>{{friendId}}</li>
-    </ul>
+  <div class="modal-body">
+    <input type="text" class="form-control" placeholder="Enter your name" [(ngModel)]="userName">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="saveName()">Save</button>
+  </div>
+</ng-template>
+
+<button class="btn btn-lg btn-outline-primary" (click)="open(content)" hidden></button>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-7">
+      <input type="text" class="form-control" name="friend-id" [(ngModel)]="friendId" placeholder="Enter friend id" (keyup.enter)="connect()">
+      <input type="text" [(ngModel)]="textMessage" name="text" class="form-control" placeholder="Enter your message" (keyup.enter)="sendText()">
+      <form class="chat">
+        <p *ngFor="let message of messageArray">{{message}}</p>
+      </form>
+    </div>
+    <div class="col-lg-3 name-list">
+      <p>Your id: {{myPeerId}}</p>
+      <p>Your name: {{userName}}</p>
+      <ul>Online:
+        <li *ngIf="isConnect">{{friendId}}</li>
+      </ul>
+    </div>
   </div>
 </div>
