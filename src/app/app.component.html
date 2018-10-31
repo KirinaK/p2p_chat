@@ -1,5 +1,6 @@
 <div class="container">
   <div class="col-lg-7">
+    <input type="text" class="form-control" name="friend-id" [(ngModel)]="friendId" placeholder="Enter id">
     <input type="text" [(ngModel)]="textMessage" name="text" class="form-control" placeholder="Enter your message" (keyup.enter)="sendText()">
     <form class="chat">
       <label>{{myPeerId}}:</label>
@@ -8,8 +9,6 @@
     </form>
   </div>
   <div class="col-lg-3 name-list">
-    <input type="text" name="friend-id" [(ngModel)]="friendId">
-    <button class="submit" (click)="connect()">connect</button>
     <ul>Online:
       <li>{{friendId}}</li>
     </ul>

@@ -20,32 +20,19 @@ export class AppComponent {
     setTimeout(() => {
       this.myPeerId = this.peer.id;
     },1000);
-    
-    let conn = this.peer.connect(this.friendId);
 
-    conn.on('open', function() {
-      conn.on ('data', function(data) {
-        console.log('Recieved message:', data);
+    this.peer.on('connection', (conn) => {
+      conn.on ('data', (data) => {
+        this.messageArray.push(data);
       });
-      conn.send('kiki');
-    })
-
-    this.peer.on('signal', function(data) {
-      console.log(JSON.stringify(data));
-      
-      this.textMessage = data;
-    })
-    
-    this.peer.on('connection', function(conn) {
-      conn.on ('data', function(data) {
-        console.log('Recieved message:' + data);
-      })
-    })
-    
+    });
   }
-  
+
   sendText() {
-    this.messageArray.push(this.textMessage);
-    this.textMessage = ' ';
+    let conn = this.peer.connect(this.friendId);
+    conn.on('open', () => {
+      conn.send(this.textMessage);
+      this.textMessage = ' ';
+    });
   }
 }
